@@ -11,18 +11,25 @@ template<class L>
 class RustTrait
 {
 public:
-    template<class B>
-    explicit RustTrait(B& box): p(std::addressof(*box)){}
+
+    RustTrait() = default;
+
+    template<class F>
+    explicit RustTrait(F& f): p(std::addressof(f))
+    {
+        using I = mp_find<L, std::remove_reference_t<F>>;
+        static_assert(I() < mp_size<L>());
+        caller = vtable[I()];
+    }
 
     void execute() const
     {
-        using I = mp_find<L, std::remove_reference_t<decltype(*std::)>>;
-        static_assert(I() < mp_size<L>());
-        vtable[I()](p);
+        caller(p);
     }
 
 private:
     void* p;
+    void (*caller)(void*);
     
     static constexpr auto vtable = initPtrs<L>();
 };

@@ -159,28 +159,29 @@ int main() {
             checkAndSet(arr, "SmallTaskRef");
         }
 
-        {
-            using Trait = RustTrait<L>;
-            std::vector<Trait> v(testSize);
-
-            for (int i = 0; i < testSize; ++i) {
-                v[i] = mp_with_index<numTypes>(distr(engine), [&](auto I) {
-                    auto p = std::make_unique<mp_at_c<L, I()>, A&>(arr);
-                    return Trait{std::move(p)};
-                });
-            }
-
-            {
-                ScopedTimer timer("SmallTaskRef");
-                for (const auto& trait: v) {
-                    trait.execute();
-                }
-            }
-
-            checkAndSet(arr, "SmallTaskRef");
-        }
-
+//        {
+//            using Trait = RustTrait<L>;
+//            std::vector<std::unique_ptr<B>> v1(testSize);
+//            std::vector<Trait> v2(testSize);
+//
+//            for (int i = 0; i < testSize; ++i) {
+//                v1[i] = mp_with_index<numTypes>(distr(engine), [&](auto I) {
+//                    auto p = std::make_unique<mp_at_c<L, I()>, A&>(arr);
+//                    v2[i] = Trait(*p);
+//                    return std::unique_ptr<B>(std::move(p));;
+//                });
+//            }
+//
+//            {
+//                ScopedTimer timer("RustTraits");
+//                for (const auto& trait: v2) {
+//                    trait.execute();
+//                }
+//            }
+//
+//            checkAndSet(arr, "RustTraits");
+//        }
     }
 
-    ScopedTimer::printStatistics<>();
+    ScopedTimer::printStatistics<std::micro>();
 }
