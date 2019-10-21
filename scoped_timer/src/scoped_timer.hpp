@@ -6,6 +6,7 @@
 
 #include <fmt/core.h>
 
+#include <cmath>
 #include <chrono>
 #include <string>
 #include <unordered_map>
@@ -36,7 +37,7 @@ class ScopedTimer
 {
 public:
     using my_clock = std::chrono::steady_clock;
-    using my_duration = std::chrono::nanoseconds;
+    using my_duration = std::chrono::duration<long double, std::nano>;
     using time_point_t = std::chrono::time_point<my_clock>;
 
     explicit ScopedTimer(std::string name): name_(std::move(name)), start_(my_clock::now()){}
@@ -45,10 +46,16 @@ public:
     {
         const auto end = my_clock::now();
         my_duration time = end - start_;
+
         std::lock_guard l(mutex_);
-        auto& [duration, count] = log_[name_];
-        duration += time;
+
+
+        auto& [mean, M2, count] = log_[name_];
         ++count;
+        auto delta1 = time - mean;
+        mean += delta1 / count;
+        auto delta2 = time - mean;
+        M2 += delta1.count() * delta2.count();
     }
 
     template<class Ratio = std::ratio<1>>
@@ -56,18 +63,22 @@ public:
     {
         using user_dur = std::chrono::duration<long double, Ratio>;
         std::lock_guard l(mutex_);
-        for(const auto& [name, durAndCounter]: log_)
+        for(const auto& [name, timingInfo]: log_)
         {
-            const auto& [duration, count] = durAndCounter;
-            user_dur average = duration / count;
-            fmt::print("Average time of {} was {} {}\n", name, average.count(), toSI<Ratio>());
+            const auto& [mean, M2, count] = timingInfo;
+            user_dur standardDeviation = my_duration{std::sqrt(M2/(count - 1))};
+            user_dur meanUser = mean;
+            auto unit = toSI<Ratio>();
+            fmt::print("{3}: Mean {0} {2}, Standard Deviation {1} {2}\n", meanUser.count(), standardDeviation.count(), unit, name);
         }
     }
 
 private:
+
     struct TimingInfo
     {
-        my_duration duration{0};
+        my_duration mean{0};
+        long double M2 = 0;
         std::size_t count = 0;
     };
 

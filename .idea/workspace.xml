@@ -8,14 +8,15 @@
   </component>
   <component name="CMakeSettings">
     <configurations>
-      <configuration PROFILE_NAME="Default-system" TOOLCHAIN_NAME="system" />
+      <configuration PROFILE_NAME="Release-clang-concepts" CONFIG_NAME="Release" TOOLCHAIN_NAME="clang-concepts" />
     </configurations>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b52bb878-cb34-4d09-a171-a07dc5391328" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rust_traits.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/rust_traits.hpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rust_traits.hpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scoped_timer/src/scoped_timer.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/scoped_timer/src/scoped_timer.hpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +26,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Default-clang-concepts" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release-clang-concepts" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -54,12 +55,12 @@
     <property name="settings.editor.selected.configurable" value="CMakeSettings" />
   </component>
   <component name="RunManager" selected="CMake Application.bench">
-    <configuration name="bench" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="polymorphism_bench" TARGET_NAME="bench" CONFIG_NAME="Default-system" RUN_TARGET_PROJECT_NAME="polymorphism_bench" RUN_TARGET_NAME="bench">
+    <configuration name="bench" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="polymorphism_bench" TARGET_NAME="bench" CONFIG_NAME="Release-clang-concepts" RUN_TARGET_PROJECT_NAME="polymorphism_bench" RUN_TARGET_NAME="bench">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration name="scoped_timer" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="polymorphism_bench" TARGET_NAME="scoped_timer" CONFIG_NAME="Default-system">
+    <configuration name="scoped_timer" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="polymorphism_bench" TARGET_NAME="scoped_timer" CONFIG_NAME="Release-clang-concepts">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -88,25 +89,29 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="2504" height="280" key="GridCell.Tab.0.bottom" timestamp="1571690603831">
+    <state x="1011" y="259" width="528" height="497" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1571693826099">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2504" height="280" key="GridCell.Tab.0.bottom/0.0.2560.1080@0.0.2560.1080" timestamp="1571690603831" />
-    <state width="2504" height="280" key="GridCell.Tab.0.center" timestamp="1571690603830">
+    <state x="1011" y="259" width="528" height="497" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1080@0.0.2560.1080" timestamp="1571693826099" />
+    <state width="2504" height="277" key="GridCell.Tab.0.bottom" timestamp="1571693928581">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2504" height="280" key="GridCell.Tab.0.center/0.0.2560.1080@0.0.2560.1080" timestamp="1571690603830" />
-    <state width="2504" height="280" key="GridCell.Tab.0.left" timestamp="1571690603830">
+    <state width="2504" height="277" key="GridCell.Tab.0.bottom/0.0.2560.1080@0.0.2560.1080" timestamp="1571693928580" />
+    <state width="2504" height="277" key="GridCell.Tab.0.center" timestamp="1571693928580">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2504" height="280" key="GridCell.Tab.0.left/0.0.2560.1080@0.0.2560.1080" timestamp="1571690603830" />
-    <state width="2504" height="280" key="GridCell.Tab.0.right" timestamp="1571690603830">
+    <state width="2504" height="277" key="GridCell.Tab.0.center/0.0.2560.1080@0.0.2560.1080" timestamp="1571693928580" />
+    <state width="2504" height="277" key="GridCell.Tab.0.left" timestamp="1571693928580">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state width="2504" height="280" key="GridCell.Tab.0.right/0.0.2560.1080@0.0.2560.1080" timestamp="1571690603830" />
-    <state x="749" y="-15" key="SettingsEditor" timestamp="1571690676587">
+    <state width="2504" height="277" key="GridCell.Tab.0.left/0.0.2560.1080@0.0.2560.1080" timestamp="1571693928580" />
+    <state width="2504" height="277" key="GridCell.Tab.0.right" timestamp="1571693928580">
       <screen x="0" y="0" width="2560" height="1080" />
     </state>
-    <state x="749" y="-15" key="SettingsEditor/0.0.2560.1080@0.0.2560.1080" timestamp="1571690676587" />
+    <state width="2504" height="277" key="GridCell.Tab.0.right/0.0.2560.1080@0.0.2560.1080" timestamp="1571693928580" />
+    <state x="759" y="75" key="SettingsEditor" timestamp="1571693900818">
+      <screen x="0" y="0" width="2560" height="1080" />
+    </state>
+    <state x="759" y="75" key="SettingsEditor/0.0.2560.1080@0.0.2560.1080" timestamp="1571693900818" />
   </component>
 </project>

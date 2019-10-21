@@ -1,7 +1,6 @@
 
 #include "task_ref.hpp"
 #include "types.hpp"
-#include "rust_traits.hpp"
 
 #include <scoped_timer.hpp>
 
@@ -51,9 +50,7 @@ int main() {
     std::default_random_engine engine(device());
     std::uniform_int_distribution<> distr(0, numTypes - 1);
 
-
-    for(int i = 0; i < 100; ++i) {
-
+    for(int i = 0; i < 1000; ++i) {
         {
             std::vector<std::unique_ptr<B>> v(testSize);
             std::generate(v.begin(), v.end(), [&] {
@@ -159,28 +156,6 @@ int main() {
             checkAndSet(arr, "SmallTaskRef");
         }
 
-//        {
-//            using Trait = RustTrait<L>;
-//            std::vector<std::unique_ptr<B>> v1(testSize);
-//            std::vector<Trait> v2(testSize);
-//
-//            for (int i = 0; i < testSize; ++i) {
-//                v1[i] = mp_with_index<numTypes>(distr(engine), [&](auto I) {
-//                    auto p = std::make_unique<mp_at_c<L, I()>, A&>(arr);
-//                    v2[i] = Trait(*p);
-//                    return std::unique_ptr<B>(std::move(p));;
-//                });
-//            }
-//
-//            {
-//                ScopedTimer timer("RustTraits");
-//                for (const auto& trait: v2) {
-//                    trait.execute();
-//                }
-//            }
-//
-//            checkAndSet(arr, "RustTraits");
-//        }
     }
 
     ScopedTimer::printStatistics<std::micro>();
