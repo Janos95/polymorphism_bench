@@ -1,5 +1,7 @@
 
 #include "task_ref.hpp"
+#include "types.hpp"
+#include "rust_traits.hpp"
 
 #include <scoped_timer.hpp>
 
@@ -16,82 +18,7 @@ using namespace boost::mp11;
 constexpr auto numTypes = 9;
 constexpr auto testSize = 100000;
 
-using A =  std::array<int, 9>;
 
-struct B {
-    B() = default;
-    virtual void execute() const = 0;
-    virtual ~B() = default;
-};
-
-
-struct X1: B
-{
-    explicit X1(A& a) : arr(std::addressof(a)) {}
-    A* arr;
-    void execute() const override {++(*arr)[0];}
-};
-
-struct X2: B
-{
-    explicit X2(A& a) : arr(std::addressof(a)) {}
-    A* arr;
-    void execute() const override {++(*arr)[1];}
-};
-
-struct X3: B
-{
-    explicit X3(A& a) : arr(std::addressof(a)) {}
-    A* arr;
-    void execute() const override {++(*arr)[2];}
-};
-
-struct X4: B
-{
-    explicit X4(A& a) : arr(std::addressof(a)) {}
-    A* arr;
-    void execute() const override {++(*arr)[3];}
-};
-
-struct X5: B
-{
-    explicit X5(A& a) : arr(std::addressof(a)) {}
-    A* arr;
-    void execute() const override {++(*arr)[4];}
-};
-
-struct X6: B
-{
-    explicit X6(A& a) : arr(std::addressof(a)) {}
-    A* arr;
-    void execute() const override {++(*arr)[5];}
-};
-
-struct X7: B
-{
-    explicit X7(A& a) : arr(std::addressof(a)) {}
-    A* arr;
-    void execute() const override {++(*arr)[6];}
-};
-
-struct X8: B
-{
-    explicit X8(A& a) : arr(std::addressof(a)) {}
-    A* arr;
-    void execute() const override {++(*arr)[7];}
-};
-
-struct X9: B
-{
-    explicit X9(A& a) : arr(std::addressof(a)) {}
-    A* arr;
-    void execute() const override {++(*arr)[8];}
-};
-
-struct mono
-{
-    void execute() const{};
-};
 
 void checkAndSet(A& arr, std::string_view where)
 {
@@ -139,7 +66,7 @@ int main() {
 
             {
                 ScopedTimer timer("OOP");
-                for (const auto &ptr: v) {
+                for (const auto& ptr: v) {
                     ptr->execute();
                 }
             }
@@ -177,7 +104,7 @@ int main() {
 
             {
                 ScopedTimer timer("Simple Variant");
-                for (const auto &var: v) {
+                for (const auto& var: v) {
                     simple_visit([](auto &&x) { x.execute(); }, var);
                 }
             }
@@ -201,7 +128,7 @@ int main() {
 
             {
                 ScopedTimer timer("TaskRef");
-                for (const auto &task: v2) {
+                for (const auto& task: v2) {
                     task.execute();
                 }
             }
@@ -224,8 +151,29 @@ int main() {
 
             {
                 ScopedTimer timer("SmallTaskRef");
-                for (const auto &task: v2) {
+                for (const auto& task: v2) {
                     task.execute();
+                }
+            }
+
+            checkAndSet(arr, "SmallTaskRef");
+        }
+
+        {
+            using Trait = RustTrait<L>;
+            std::vector<Trait> v(testSize);
+
+            for (int i = 0; i < testSize; ++i) {
+                v[i] = mp_with_index<numTypes>(distr(engine), [&](auto I) {
+                    auto p = std::make_unique<mp_at_c<L, I()>, A&>(arr);
+                    return Trait{std::move(p)};
+                });
+            }
+
+            {
+                ScopedTimer timer("SmallTaskRef");
+                for (const auto& trait: v) {
+                    trait.execute();
                 }
             }
 

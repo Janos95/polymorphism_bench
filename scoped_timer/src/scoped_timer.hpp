@@ -23,7 +23,7 @@ std::string toSI()
         return "micro seconds";
     if constexpr(std::is_same_v<std::milli, Ratio>)
         return "milli seconds";
-    if constexpr(std::is_same_v<std::centi, Ratio>)
+    if constexpr(std::is_same_v<std::ratio<1>, Ratio>)
         return "seconds";
     if constexpr(std::is_same_v<std::ratio<60>, Ratio>)
         return "minutes";
@@ -51,7 +51,7 @@ public:
         ++count;
     }
 
-    template<class Ratio = std::centi>
+    template<class Ratio = std::ratio<1>>
     static void printStatistics()
     {
         using user_dur = std::chrono::duration<long double, Ratio>;
@@ -65,13 +65,13 @@ public:
     }
 
 private:
-    struct DurationAndCounter
+    struct TimingInfo
     {
         my_duration duration{0};
         std::size_t count = 0;
     };
 
-    static std::unordered_map<std::string, DurationAndCounter> log_;
+    static std::unordered_map<std::string, TimingInfo> log_;
     static std::mutex mutex_;
 
     std::string name_;

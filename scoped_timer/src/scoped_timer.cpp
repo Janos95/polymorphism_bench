@@ -8,5 +8,5 @@
 #include <unordered_map>
 
 
-std::unordered_map<std::string, ScopedTimer::DurationAndCounter> ScopedTimer::log_;
+std::unordered_map<std::string, ScopedTimer::TimingInfo> ScopedTimer::log_;
 std::mutex ScopedTimer::mutex_;
