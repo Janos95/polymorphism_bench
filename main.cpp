@@ -13,6 +13,7 @@ using namespace boost::mp11;
 #include <variant>
 #include <boost/mp11/detail/mp_append.hpp>
 #include <boost/mp11/list.hpp>
+#include <functional>
 
 constexpr auto numTypes = 9;
 constexpr auto testSize = 100000;
@@ -50,7 +51,7 @@ int main() {
     std::default_random_engine engine(device());
     std::uniform_int_distribution<> distr(0, numTypes - 1);
 
-    for(int i = 0; i < 1000; ++i) {
+    for(int i = 0; i < 10000; ++i) {
         {
             std::vector<std::unique_ptr<B>> v(testSize);
             std::generate(v.begin(), v.end(), [&] {
@@ -154,6 +155,56 @@ int main() {
             }
 
             checkAndSet(arr, "SmallTaskRef");
+        }
+
+        {
+            static void* dispatch_table[] = {
+                    &&do_1, &&do_2, &&do_3,
+                    &&do_4, &&do_5, &&do_6, &&do_7, &&do_8, &&do_9, &&do_halt};
+
+            std::vector<void*> v(testSize + 1);
+            std::generate(v.begin(), v.end(), [&]{ return dispatch_table[distr(engine)];});
+            v.back() = dispatch_table[9];
+
+            #define DISPATCH() goto *(*p++)
+            void** p = &v.front();
+            {
+                ScopedTimer timer("computed gotos");
+                DISPATCH();
+                while(1) {
+                    do_1:
+                        ++arr[0];
+                        DISPATCH();
+                    do_2:
+                        ++arr[1];
+                        DISPATCH();
+                    do_3:
+                        ++arr[2];
+                        DISPATCH();
+                    do_4:
+                        ++arr[3];
+                        DISPATCH();
+                    do_5:
+                        ++arr[4];
+                        DISPATCH();
+                    do_6:
+                        ++arr[5];
+                        DISPATCH();
+                    do_7:
+                        ++arr[6];
+                        DISPATCH();
+                    do_8:
+                        ++arr[7];
+                        DISPATCH();
+                    do_9:
+                        ++arr[8];
+                        DISPATCH();
+                }
+                do_halt:;
+            }
+
+
+            checkAndSet(arr, "computed gotos");
         }
 
     }
