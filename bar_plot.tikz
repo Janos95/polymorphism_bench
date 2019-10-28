@@ -1,0 +1,70 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage{tikz}
+\usepackage{pgfplots}
+%gcc 8.3.0
+% Standard Variant: Mean 860.529 micro seconds, Standard Deviation 29.4212 micro seconds
+% OOP: Mean 706.37 micro seconds, Standard Deviation 24.4466 micro seconds
+% Simple Variant: Mean 686.704 micro seconds, Standard Deviation 24.6316 micro seconds
+% SmallTaskRef: Mean 661.123 micro seconds, Standard Deviation 23.4118 micro seconds
+% TaskRef: Mean 568.11 micro seconds, Standard Deviation 21.0499 micro seconds
+% computed gotos: Mean 468.772 micro seconds, Standard Deviation 20.029 micro seconds
+
+%clang 10.0.0
+% TaskRef: Mean 588.269 micro seconds, Standard Deviation 26.7854 micro seconds
+% SmallTaskRef: Mean 711.342 micro seconds, Standard Deviation 29.0858 micro seconds
+% Simple Variant: Mean 1218.33 micro seconds, Standard Deviation 45.9515 micro seconds
+% OOP: Mean 724.547 micro seconds, Standard Deviation 29.3956 micro seconds
+% Standard Variant: Mean 698.42 micro seconds, Standard Deviation 28.4286 micro seconds
+% computed gotos: Mean 520.033 micro seconds, Standard Deviation 27.1942 micro seconds
+\pgfplotsset{compat=newest}
+\pgfplotsset{% basis: example on p. 262 of the pgfplots manual
+    /pgfplots/area legend/.style={
+        /pgfplots/legend image code/.code={
+            \fill[##1] (0cm,0.6em) rectangle (0.9em,-0.3em);
+}, },
+}
+
+
+\begin{document}
+\centering
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=15cm,
+axis x line=center,
+axis y line=left,
+symbolic x coords={Computed Goto, Type Erasure,Type Erasure + No Space Overhead,Simple Visit,Virtual Function Call, Standard Visit},
+enlargelimits=true,
+ymin=0,
+nodes near coords,
+ylabel style={align=center},
+ylabel={Time [$\mu s$]},
+x tick label style={/pgf/number format/1000 sep=,text width=2cm,align=center},
+ybar,
+bar width=0.9cm,
+xtick=data, area legend,
+]
+\addplot[
+blue!60!white, 
+fill=blue!60!white, 
+error bars/.cd,
+y dir=both,
+y explicit,
+error bar style={thick,black}]
+	coordinates {(Computed Goto,468.772) +- (-20.029, 20.029) (Type Erasure,568.11) +- (-21.0499, 21.0499) (Type Erasure + No Space Overhead,661.123) +- (-23.4118, 23.4118)
+		 (Simple Visit,686.704) +- (-24.6316, 24.6316) (Virtual Function Call,706.37) +- (-24.4466, 24.4466) (Standard Visit,860.529) +- (-29.4212, 29.4212)};
+\addplot[
+red!60!white, 
+fill=red!60!white,
+error bars/.cd,
+y dir=both,
+y explicit,
+error bar style={thick,black}] 
+	coordinates {(Computed Goto,520.033) +- (-27.1942, 27.1942) (Type Erasure,588.269) +- (-26.7854, 26.7854) (Type Erasure + No Space Overhead,711.342) +- (-29.0858, 29.0858)
+		 (Simple Visit,1218.33) +- (-45.9515, 45.9515) (Virtual Function Call,724.547) +- (-29.3956, 29.3956) (Standard Visit,698.42) +- (-28.4286, 28.4286)};
+\legend{gcc 8.3.0, clang 10.0.0}
+\end{axis}
+\end{tikzpicture}
+
+\end{document}
